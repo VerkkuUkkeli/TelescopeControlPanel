@@ -30,7 +30,6 @@ namespace JoystrickControlDemo
         private const int YAxisMax = 65535;
         private const int ZAxisMax = 65535;
 
-
         string DefaultJoystickNameTextBoxMessage = "Logitech Extreme 3D";
 
         JoystickMonitor joystickMonitor;
@@ -41,7 +40,9 @@ namespace JoystrickControlDemo
             InitializeComponent();
             JoystickNameTextBox.Text = DefaultJoystickNameTextBoxMessage;
 
-
+            // set cursor preview initially to center
+            CanvasCursor.SetValue(Canvas.LeftProperty, JoystickCanvasPreview.ActualWidth / 2);
+            CanvasCursor.SetValue(Canvas.TopProperty, JoystickCanvasPreview.ActualHeight / 2);
 
         }
 
@@ -80,6 +81,7 @@ namespace JoystrickControlDemo
 
                 JoystickConnectButton.IsEnabled = false;
                 JoystickDisconnectButton.IsEnabled = true;
+                JoystickNameTextBox.IsEnabled = false;
                 joystickMonitor = new JoystickMonitor(JoystickNameTextBox.Text.Trim());
 
                 joystickMonitorCancellationSource = new CancellationTokenSource();
@@ -96,6 +98,7 @@ namespace JoystrickControlDemo
                 // clean up
                 JoystickConnectButton.IsEnabled = true;
                 JoystickDisconnectButton.IsEnabled = false;
+                JoystickNameTextBox.IsEnabled = true;
                 MainStatusBarMessage.Text = String.Format("Could not connect to joystick: {0}. Reason: {1}", JoystickNameTextBox.Text.Trim(), ex.Message);
 
                 dullifyProgressBards();
@@ -107,17 +110,22 @@ namespace JoystrickControlDemo
             if (state.Offset == JoystickOffset.X)
             {
                 XProgressBar.Value = calculateXAxisPercentage(state.Value);
+                CanvasCursor.SetValue(Canvas.LeftProperty, calculateCanvasCursorXPosition(state.Value));
+                Console.WriteLine(calculateCanvasCursorXPosition(state.Value));
             }
 
             if (state.Offset == JoystickOffset.Y)
             {
                 YProgressBar.Value = calculateYAxisPercentage(state.Value);
+                CanvasCursor.SetValue(Canvas.TopProperty, calculateCanvasCursorYPosition(state.Value));
+
             }
 
             if (state.Offset == JoystickOffset.RotationZ)
             {
                 ZProgressBar.Value = calculateZAxisPercentage(state.Value);
             }
+            
         }
 
 
@@ -147,6 +155,15 @@ namespace JoystrickControlDemo
         private int calculateZAxisPercentage(int num)
         {
             return (int)((double)num / ZAxisMax * 100);
+        }
+
+        private double calculateCanvasCursorXPosition(int num)
+        {
+            return (calculateXAxisPercentage(num) * JoystickCanvasPreview.ActualWidth / 100);
+        }
+        private double calculateCanvasCursorYPosition(int num)
+        {
+            return (calculateYAxisPercentage(num) * JoystickCanvasPreview.ActualHeight / 100);
         }
 
         private void dullifyProgressBards()

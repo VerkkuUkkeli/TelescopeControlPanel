@@ -13,15 +13,15 @@
             <ColumnDefinition Width="*"/>
 
         </Grid.ColumnDefinitions>
-        <StatusBar x:Name="MainStatusBar" Grid.ColumnSpan="3" Height="20" VerticalAlignment="Bottom">
-            <TextBlock x:Name="MainStatusBarMessage" Height="20" TextWrapping="Wrap" Width="1272"/>
+        <StatusBar x:Name="MainStatusBar" Grid.ColumnSpan="3" Height="25" VerticalAlignment="Bottom">
+            <TextBlock x:Name="MainStatusBarMessage" Height="25" TextWrapping="Wrap" Width="1272" FontSize="13.333"/>
         </StatusBar>
 
-        <Grid x:Name="PreviewGrid" Margin="5,5,0,20" Grid.Column="0" >
+        <Grid x:Name="PreviewGrid" Margin="5,5,0,25" Grid.Column="0" >
             <Border x:Name="PreviewGridBorder" BorderBrush="Black" BorderThickness="1" Margin="0"/>
         </Grid>
         <GridSplitter x:Name="gridSplitter" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,20"/>
-        <Grid x:Name="SideGrid" Grid.Column="2" Margin="0,5,5,20">
+        <Grid x:Name="SideGrid" Grid.Column="2" Margin="0,5,5,25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="5px"/>
@@ -32,23 +32,49 @@
             </Grid>
             <GridSplitter x:Name="SideGridSplitter" HorizontalAlignment="Stretch" Margin="-5,0,0,0" Grid.Row="1"/>
             <Grid x:Name="ControlsGrid" Margin="0" Grid.Row="2">
-                <Border x:Name="ControlsGridBorder" BorderBrush="Black" BorderThickness="1" Margin="0">
-                    <GroupBox x:Name="JoystickPreviewGroupBox" Header="Joystick Preview" Height="125" Margin="5,58,5,0" VerticalAlignment="Top">
-                        <Grid x:Name="JoystickPreviewGrid" Margin="0">
-                            <ProgressBar x:Name="XProgressBar" Height="25" VerticalAlignment="Top" Margin="30,5,5,0" Foreground="Red"/>
-                            <Label x:Name="X" Content="X" HorizontalAlignment="Left" Height="25" Margin="5,5,0,0" VerticalAlignment="Top" Width="20"/>
-                            <ProgressBar x:Name="YProgressBar" Height="25" VerticalAlignment="Top" Margin="30,40,5,0" Foreground="Lime"/>
-                            <Label x:Name="Y" Content="Y" HorizontalAlignment="Left" Height="25" Margin="5,40,0,0" VerticalAlignment="Top" Width="20"/>
-                            <ProgressBar x:Name="ZProgressBar" Height="25" VerticalAlignment="Top" Margin="30,75,5,0" Foreground="#FF1D65FF"/>
-                            <Label x:Name="Z" Content="Z" HorizontalAlignment="Left" Height="25" Margin="5,75,0,0" VerticalAlignment="Top" Width="20"/>
-                        </Grid>
-                    </GroupBox>
-                </Border>
+                <Border x:Name="ControlsGridBorder" BorderBrush="Black" BorderThickness="1" Margin="0"/>
                 <GroupBox x:Name="ConnectionsGroupBox" Header="Connections" Height="56" VerticalAlignment="Top" Margin="6,1,6,0">
                     <Grid x:Name="ConnectionsGrid" Margin="0">
-                        <TextBox x:Name="JoystickNameTextBox" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" GotFocus="JoystickNameTextBox_GotFocus" LostFocus="JoystickNameTextBox_LostFocus" Margin="5,5,137,0"/>
+                        <TextBox x:Name="JoystickNameTextBox" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" GotFocus="JoystickNameTextBox_GotFocus" LostFocus="JoystickNameTextBox_LostFocus" Margin="5,5,137,0" VerticalContentAlignment="Center"/>
                         <Button x:Name="JoystickConnectButton" VerticalAlignment="Top" Margin="0,5,79,0" Height="25" Content="Connect" Click="JoystickConnectButton_Click" RenderTransformOrigin="-0.458,0.44" HorizontalAlignment="Right" Width="53"/>
                         <Button x:Name="JoystickDisconnectButton" VerticalAlignment="Top" Margin="0,5,5,0" Height="25" Click="JoystickDisconnectButton_Click" RenderTransformOrigin="-0.458,0.44" IsEnabled="False" HorizontalAlignment="Right" Width="69" Content="Disconnect"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="JoystickPreviewGroupBox" Header="Joystick Preview" Margin="6,59,6,0" VerticalAlignment="Top">
+                    <Grid x:Name="JoystickPreviewGrid" Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Expander Header="Individual Axes" Grid.Row="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20px"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Content="X" Grid.Column="0" Grid.Row="0"/>
+                                <Label Content="Y" Grid.Column="0" Grid.Row="1"/>
+                                <Label Content="Z" Grid.Column="0" Grid.Row="2"/>
+
+                                <ProgressBar x:Name="XProgressBar" Foreground="Red" Grid.Column="1" Grid.Row="0"/>
+                                <ProgressBar x:Name="YProgressBar" Foreground="Lime" Grid.Column="1" Grid.Row="1"/>
+                                <ProgressBar x:Name="ZProgressBar" Foreground="#FF1D65FF" Grid.Column="1" Grid.Row="2"/>
+                            </Grid>
+                        </Expander>
+                        <Expander Header="2D Preview" Grid.Row="1">
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="0,10,0,0" Height="250">
+                                <Canvas x:Name="JoystickCanvasPreview" Margin="0,0,7,7">
+                                    <Image x:Name="CanvasCursor" Source="cursor.png"/>
+                                </Canvas>
+                            </Border>
+                        </Expander>
+                        
                     </Grid>
                 </GroupBox>
             </Grid>
