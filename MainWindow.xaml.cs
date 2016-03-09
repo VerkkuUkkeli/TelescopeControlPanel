@@ -97,6 +97,8 @@ namespace JoystrickControlDemo
                 JoystickConnectButton.IsEnabled = true;
                 JoystickDisconnectButton.IsEnabled = false;
                 MainStatusBarMessage.Text = String.Format("Could not connect to joystick: {0}. Reason: {1}", JoystickNameTextBox.Text.Trim(), ex.Message);
+
+                dullifyProgressBards();
             }
         }
 
@@ -125,10 +127,7 @@ namespace JoystrickControlDemo
             JoystickConnectButton.IsEnabled = true;
             JoystickDisconnectButton.IsEnabled = false;
 
-            // dullify joystick progress bars
-            XProgressBar.Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-            YProgressBar.Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-            ZProgressBar.Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            dullifyProgressBards();
 
             // Output StatusBar message
             MainStatusBarMessage.Text = String.Format("Successfully disconnected from joystick: {0}", JoystickNameTextBox.Text.Trim());
@@ -148,6 +147,14 @@ namespace JoystrickControlDemo
         private int calculateZAxisPercentage(int num)
         {
             return (int)((double)num / ZAxisMax * 100);
+        }
+
+        private void dullifyProgressBards()
+        {
+            // dullify joystick progress bars
+            XProgressBar.Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            YProgressBar.Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            ZProgressBar.Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
     }    
 }
