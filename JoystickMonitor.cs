@@ -35,17 +35,16 @@ namespace JoystrickControlDemo
                     throw new Exception("More than one Joystick present, only one allowed!");
                 }
 
-                if (String.Compare(trimmedProductName, _joystickName) == 0 )
+                if (String.Compare(trimmedProductName, _joystickName) == 0)
                 {
                     devicesFound++;
                     device = d;
                 }
             }
 
-            // verify that an input device was found
             if (device == null)
             {
-                throw new Exception(String.Format("No joystick with name \"{0}\" found!", _joystickName));
+                throw new NullReferenceException("No such device found!");
             }
 
             var joystick = new Joystick(directInput, device.InstanceGuid);
@@ -67,4 +66,5 @@ namespace JoystrickControlDemo
         }
 
     }
+
 }

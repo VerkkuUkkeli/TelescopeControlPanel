@@ -85,11 +85,18 @@ namespace JoystrickControlDemo
                 joystickMonitorCancellationSource = new CancellationTokenSource();
                 var progress = new Progress<JoystickUpdate>(s => ProcessJoystickUpdate(s));
                 MainStatusBarMessage.Text = String.Format("Successfully connected to joystick: {0}", JoystickNameTextBox.Text.Trim());
+
                 await Task.Run(() => joystickMonitor.PollJoystick(progress, joystickMonitorCancellationSource.Token), joystickMonitorCancellationSource.Token);
+
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
                 Console.WriteLine("Error! :( | "+ex.Message);
+
+                // clean up
+                JoystickConnectButton.IsEnabled = true;
+                JoystickDisconnectButton.IsEnabled = false;
+                MainStatusBarMessage.Text = String.Format("Could not connect to joystick: {0}. Reason: {1}", JoystickNameTextBox.Text.Trim(), ex.Message);
             }
         }
 
@@ -124,7 +131,7 @@ namespace JoystrickControlDemo
             ZProgressBar.Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
 
             // Output StatusBar message
-            MainStatusBarMessage.Text = String.Format("Successfully Disconnected from joystick: {0}", JoystickNameTextBox.Text.Trim());
+            MainStatusBarMessage.Text = String.Format("Successfully disconnected from joystick: {0}", JoystickNameTextBox.Text.Trim());
 
         }
 
